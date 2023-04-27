@@ -1,15 +1,16 @@
+// Import and initialize packages, modules, and variables
 const express = require("express");
 const router = express.Router();
 const util = require("util");
 const fs = require("fs");
 const uuid = require("uuid");
 
-
 const readFilePromise = util.promisify(fs.readFile);
 const writeFilePromise = util.promisify(fs.writeFile);
 
 const database = "./db/db.json";
 
+// GET all note in api
 router.get("/", (req, res) => {
     readFilePromise(database, "utf-8").then(data => {
         return res.json(JSON.parse(data));
@@ -18,6 +19,7 @@ router.get("/", (req, res) => {
     });
 });
 
+// POST new note to api
 router.post("/", (req, res) => {
     const newNote = {
         id: uuid.v4(),
@@ -35,7 +37,7 @@ router.post("/", (req, res) => {
     });
 });
 
-
+// DELETE note from api
 router.delete("/:id", (req, res) => {
     const noteID = req.params.id;
     let objDelete
@@ -59,4 +61,5 @@ router.delete("/:id", (req, res) => {
 
 })
 
+// Export module
 module.exports = router;
